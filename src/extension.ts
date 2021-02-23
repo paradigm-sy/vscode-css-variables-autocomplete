@@ -1,27 +1,90 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as css from 'css';
+import { CompletionItem, CompletionList } from 'vscode';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+import type { Rule, Declaration } from 'css';
+
 export function activate(context: vscode.ExtensionContext) {
+	const items: vscode.CompletionItem[] = [];
+	const workspaceFolder = vscode.workspace.workspaceFolders || [];
+	const folderPath = workspaceFolder[0]?.uri.fsPath;
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "vscode-css-variables-autocomplete" is now active!');
+	// workspace not selected
+	if (!vscode.workspace.workspaceFolders) {
+		return;
+	}
+	
+	const config = vscode.workspace.getConfiguration('cssVarriablesAutocomplete');
+	const hasFilesInConfig = config && config.has('files');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('vscode-css-variables-autocomplete.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
+	// no config or specified files
+	if (!config || !hasFilesInConfig) {
+		return;
+	}
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from vscode-css-variables-autocomplete!');
+	console.log('passed');
+
+	const configFiles = (config.get('files') || []) as string[];
+	const configLanguageMods = (config.get('languageModes') || []) as string[];
+	const configPrefixes = (config.get('propertyPrefixes') || {}) as Record<string, string>;
+	
+	configFiles.forEach((filePath) => {
+		const file = fs.readFileSync(path.join(folderPath, filePath), { encoding: 'utf8' });
+		const cssParsed = css.parse(file);
+		const rootRule: Rule | undefined = cssParsed.stylesheet?.rules.find((rule: Rule) => {
+			const isRuleType = rule.type = 'rule';
+			const hasRootSelector = rule?.selectors?.includes(':root');
+
+			return Boolean(isRuleType && hasRootSelector);
+		});
+
+		const declarations = rootRule?.declarations;
+		const variables = declarations?.filter((declaration: Declaration) => {	
+			return Boolean(
+				declaration.type === 'declaration' &&
+				declaration?.property?.startsWith('--')
+			);
+		});
+
+		variables?.forEach((variable: Declaration) => {
+			const completionItem = new CompletionItem(variable.property!, vscode.CompletionItemKind.Variable);
+
+			completionItem.detail = variable.value;
+			completionItem.insertText = `var(${variable.property})`;
+
+			items.push(completionItem);
+		});
+
 	});
 
-	context.subscriptions.push(disposable);
-}
+	let completionProvider = vscode.languages.registerCompletionItemProvider(
+		configLanguageMods || [ 'css' ],
+		{
+			async provideCompletionItems(document, position) {
+				let completionItems: vscode.CompletionItem[] = items;
 
-// this method is called when your extension is deactivated
-export function deactivate() {}
+				const firstCharOfLinePosition = new vscode.Position(position.line, 0);
+				const beforeCursorText = document.getText(new vscode.Range(firstCharOfLinePosition, position))?.trim() || '';
+
+				if (!beforeCursorText.match(/--([\w-]*)/)) {
+					return null;
+				}
+
+				const propertyMatch = beforeCursorText.match(/([\w-]*):/);
+				const property = propertyMatch ? propertyMatch[1] : null;
+				const propertyPrefix = property && configPrefixes[property];
+				
+				if (propertyPrefix) {
+					completionItems = items.filter(item => item.label.startsWith(`--${propertyPrefix}`));
+				}
+
+				return new CompletionList(completionItems);
+			},
+		},
+		'-', '-'
+	);
+
+	context.subscriptions.push(completionProvider);
+}
