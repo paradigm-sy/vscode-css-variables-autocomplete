@@ -3,7 +3,7 @@
 	"displayName": "vscode-css-variables-autocomplete",
 	"publisher": "paradigm-sy",
 	"description": "",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"icon": "img/icon.png",
 	"repository": {
 		"type": "git",
@@ -16,7 +16,10 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onLanguage:css"
+		"onLanguage:css",
+		"onLanguage:scss",
+    	"onLanguage:less",
+		"onLanguage:postcss"
 	],
 	"main": "./out/extension.js",
 	"scripts": {

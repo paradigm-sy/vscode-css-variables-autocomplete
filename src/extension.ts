@@ -24,8 +24,6 @@ export function activate(context: vscode.ExtensionContext) {
 		return;
 	}
 
-	console.log('passed');
-
 	const configFiles = (config.get('files') || []) as string[];
 	const configLanguageMods = (config.get('languageModes') || []) as string[];
 	const configPrefixes = (config.get('propertyPrefixes') || {}) as Record<string, string>;
@@ -60,7 +58,7 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	let completionProvider = vscode.languages.registerCompletionItemProvider(
-		configLanguageMods || [ 'css' ],
+		configLanguageMods || [ 'css', 'postcss' ],
 		{
 			async provideCompletionItems(document, position) {
 				let completionItems: vscode.CompletionItem[] = items;
