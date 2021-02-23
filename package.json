@@ -3,7 +3,7 @@
 	"displayName": "vscode-css-variables-autocomplete",
 	"publisher": "paradigm-sy",
 	"description": "",
-	"version": "0.0.2",
+	"version": "0.1.0",
 	"icon": "img/icon.png",
 	"repository": {
 		"type": "git",
@@ -18,7 +18,7 @@
 	"activationEvents": [
 		"onLanguage:css",
 		"onLanguage:scss",
-    	"onLanguage:less",
+		"onLanguage:less",
 		"onLanguage:postcss"
 	],
 	"main": "./out/extension.js",
@@ -35,7 +35,7 @@
 					"description": "Custom language modes"
 				},
 				"cssVarriablesAutocomplete.propertyPrefixes": {
-					"type":"object",
+					"type": "object",
 					"description": "Suggest only variables with some prefix in name for specified properties"
 				}
 			}
