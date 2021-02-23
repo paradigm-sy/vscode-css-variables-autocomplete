@@ -22,6 +22,25 @@
 		"onLanguage:postcss"
 	],
 	"main": "./out/extension.js",
+	"contributes": {
+		"configuration": {
+			"title": "CSS Variables Autocomplete",
+			"properties": {
+				"cssVarriablesAutocomplete.files": {
+					"type": "array",
+					"description": "Array of paths to files with css variables"
+				},
+				"cssVarriablesAutocomplete.languageModes": {
+					"type": "array",
+					"description": "Custom language modes"
+				},
+				"cssVarriablesAutocomplete.propertyPrefixes": {
+					"type":"object",
+					"description": "Suggest only variables with some prefix in name for specified properties"
+				}
+			}
+		}
+	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",

@@ -22,23 +22,19 @@ Create or modify file `.vscode/settings.json`. Folder `.vscode` should be in you
 Minimal configuration file:
 ```
 {
-  "cssVarriablesAutocomplete": {
-    "files": [ "variables.css" ],
-  }
+  "cssVarriablesAutocomplete.files": [ "variables.css" ],
 }
 ```
 
 Full configuration file:
 ```
 {
-  "cssVarriablesAutocomplete": {
-    "files": [ "variables.css" ],
-    "languageModes": [ "css", "postcss" ],
-    "propertyPrefixes": {
-      "font-size": "fs",
-      "line-height": "lh",
-      "box-shadow": "shadow",
-    }
+  "cssVarriablesAutocomplete.files": [ "variables.css" ],
+  "cssVarriablesAutocomplete.languageModes": [ "css", "postcss" ],
+  "cssVarriablesAutocomplete.propertyPrefixes": {
+    "font-size": "fs",
+    "line-height": "lh",
+    "box-shadow": "shadow",
   }
 }
 ```
@@ -46,5 +42,5 @@ Full configuration file:
 This extension contributes the following configuration parameters:
 
 * `files`: array of paths to files with css variables
-* `languageModes`: specify custom language modes if deefault 'css' not suits you.
+* `languageModes`: specify custom language modes if default 'css' not suits you.
 * `propertyPrefixes`: allows you to suggest only variables with some prefix in name for specified properties. For example with `"font-size": "fs"` extension will only suggest you variables `--fs-big`, `--fs-small`, but not `--small`.
