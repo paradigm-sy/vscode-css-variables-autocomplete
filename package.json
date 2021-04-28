@@ -3,7 +3,7 @@
 	"displayName": "vscode-css-variables-autocomplete",
 	"publisher": "paradigm-sy",
 	"description": "",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"icon": "img/icon.png",
 	"repository": {
 		"type": "git",
