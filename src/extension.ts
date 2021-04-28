@@ -58,7 +58,7 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	let completionProvider = vscode.languages.registerCompletionItemProvider(
-		configLanguageMods || [ 'css', 'postcss' ],
+		configLanguageMods.length ? configLanguageMods : [ 'css', 'postcss' ],
 		{
 			async provideCompletionItems(document, position) {
 				let completionItems: vscode.CompletionItem[] = items;
