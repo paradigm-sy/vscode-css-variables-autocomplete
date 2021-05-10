@@ -6,7 +6,7 @@
 
 Simple extension for enabling autocompletion for css-variables from selected files. You can trigger it by typing `--`.
 
-![Demo](https://github.com/paradigm-sy/vscode-css-variables-autocomplete/blob/master/img/demo.gif)
+![Demo](https://github.com/paradigm-sy/vscode-css-variables-autocomplete/raw/master/img/demo.gif)
 
 Be sure that you have one of supported language modes selected in right bottom of your vscode window:
 * css
@@ -14,7 +14,7 @@ Be sure that you have one of supported language modes selected in right bottom o
 * scss
 * less
 
-![languageModes](https://github.com/paradigm-sy/vscode-css-variables-autocomplete/blob/master/img/language-mode.png)
+![languageModes](https://github.com/paradigm-sy/vscode-css-variables-autocomplete/raw/master/img/language-mode.png)
 
 ## Extension Configuration
 Create or modify file `.vscode/settings.json`. Folder `.vscode` should be in your workspace root directory.
